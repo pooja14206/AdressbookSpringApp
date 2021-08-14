@@ -1,42 +1,90 @@
 package com.org.AddressbookSpringApp.controller;
 
-
 import com.org.AddressbookSpringApp.dto.AddressbookDTO;
 import com.org.AddressbookSpringApp.dto.ResponseDTO;
 import com.org.AddressbookSpringApp.model.AddressbookData;
+import com.org.AddressbookSpringApp.service.IAddressbookService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
+//@Validated
 public class AddressbookController {
-    //curl localhost:8080/addressbook/get
+
+    @Autowired
+    IAddressbookService addressbookService;
+
+    //Adding SLF4j
+    Logger logger = LoggerFactory.getLogger(AddressbookController.class);
+
+    /*
+    * @method: Ability To Get All Person From DB Using GET Method
+    * @Execution URL: localhost:8080/addressbook/get
+    */
     @RequestMapping("/get")
-    public ResponseEntity<String> getAddressbookData() {
-        return new ResponseEntity<String>("Get Call Success.", HttpStatus.OK);
+    public ResponseEntity<ResponseDTO> getAddressbookData() {
+        logger.trace("Retrieve List of person from addressbook");
+        List<AddressbookData> addressbookList =  addressbookService.getAddressbookData();
+        ResponseDTO responseDTO = new ResponseDTO("get call Success", addressbookList);
+        return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
     }
 
-    //curl localhost:8080/addressbook/get/1
-    @GetMapping("/get/{Id}")
-    public ResponseEntity<String> getAddressbookData(@PathVariable("Id") int id){
-        return new ResponseEntity<String >("Get Call Success for id:"+id, HttpStatus.OK);
+    /*
+     * @method: Ability To Get Person By Id From DB Using GET Method
+     * @Execution URL: localhost:8080/addressbook/get/1
+     * @param: id
+     */
+    @GetMapping("/get/{id}")
+    public ResponseEntity<ResponseDTO> getAddressbookData(@PathVariable("id") int id){
+        logger.trace("Find a employee by Id from addressbook");
+        AddressbookData addressbookData = addressbookService.getAddressbookDataById(id);
+        ResponseDTO responseDTO = new ResponseDTO("Get correct Data", addressbookData);
+        return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
     }
 
-     //http://localhost:8080/addressbook/create
+    /*
+     * @method: Ability To add Person To the DB Using POST Method
+     * @Execution URL: localhost:8080/addressbook/create
+     * @param: addressbookDTO
+     */
     @PostMapping("/create")
-    public ResponseEntity<String> addAddressbookData(@RequestBody AddressbookDTO addressbookDTO) {
-        return new ResponseEntity<String >("Created Employee payroll data for:"+addressbookDTO, HttpStatus.OK);
+    public ResponseEntity<ResponseDTO> addAddressbookData(@Valid @RequestBody AddressbookDTO addressbookDTO) {
+        logger.trace("Adding person To addressbook");
+        AddressbookData addressbookData = addressbookService.addAddressbookData(addressbookDTO);
+        ResponseDTO responseDTO = new ResponseDTO("add person Successfully", addressbookData);
+        return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
     }
 
-     //http://localhost:8080/addressbook/update
-    @PutMapping("/update")
-    public ResponseEntity<String > updateAddressbookData(@RequestBody AddressbookDTO addressbookDTO) {
-        return new ResponseEntity<String >("Updated Employee payroll Data for: "+addressbookDTO, HttpStatus.OK);
+    /*
+     * @method: Ability To Update Person To the DB Using PUT Method
+     * @Execution URL: localhost:8080/addressbook/update
+     * @param: addressbookDTO, id
+     */
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ResponseDTO> updateAddressbookData(@Valid @RequestBody AddressbookDTO addressbookDTO,@PathVariable int id) {
+        logger.trace("Update person detail By Id to addressbook");
+        AddressbookData addressbookData = addressbookService.updateAddressbookData(id,addressbookDTO);
+        ResponseDTO responseDTO = new ResponseDTO("Updated person Successfully", addressbookData);
+        return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
     }
 
-     //http://localhost:8080/addressbook/delete/1
+    /*
+     * @method: Ability To Delete Person From the DB Using DELETE Method
+     * @Execution URL: localhost:8080/addressbook/delete/1
+     * @param: id
+     */
     @DeleteMapping("/delete/{Id}")
-    public ResponseEntity<String> deleteAddressbookData(@PathVariable("Id") int id) {
-        return new ResponseEntity<String >("Delete Call Success for id: "+id, HttpStatus.OK);
-        }
+    public ResponseEntity<ResponseDTO> deleteAddressbookData(@PathVariable("Id") int id) {
+        logger.trace("Deleting a person from addressbook");
+        addressbookService.deleteAddressbookData(id);
+        ResponseDTO responseDTO = new ResponseDTO("Deleted Successfully: ",id);
+        return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
+    }
 }

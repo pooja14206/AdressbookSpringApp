@@ -1,17 +1,50 @@
 package com.org.AddressbookSpringApp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.org.AddressbookSpringApp.dto.AddressbookDTO;
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter@Setter
+@Entity
+@Data
 public class AddressbookData {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private String firstName;
     private String lastName;
     private String city;
+    private String state;
+    private String emailId;
     private int zip;
-    private String address;
+    private long phoneNumber;
+    public AddressbookData(AddressbookDTO addressbookDTO) {
+        this.id = id;
+        this.firstName = addressbookDTO.firstName;
+        this.lastName = addressbookDTO.lastName;
+        this.city = addressbookDTO.city;
+        this.state = addressbookDTO.state;
+        this.emailId = addressbookDTO.emailId;
+        this.zip = addressbookDTO.zip;
+        this.phoneNumber = addressbookDTO.phoneNumber;
+    }
+
+
+    public void updateaddressbookData(AddressbookDTO addressbookDTO) {
+        this.id = id;
+        this.firstName = addressbookDTO.firstName;
+        this.lastName = addressbookDTO.lastName;
+        this.city = addressbookDTO.city;
+        this.state = addressbookDTO.state;
+        this.emailId = addressbookDTO.emailId;
+        this.zip = addressbookDTO.zip;
+        this.phoneNumber = addressbookDTO.phoneNumber;
+    }
 }
