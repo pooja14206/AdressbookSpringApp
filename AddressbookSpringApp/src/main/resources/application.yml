@@ -1,0 +1,11 @@
+#Spring:
+#  datasource:
+#    URL:
+#    username:
+#    Password:
+#  jpa:
+#    show-sql:
+#    properties:
+#      hibernate:
+#        dialect:
+#    hibernate:

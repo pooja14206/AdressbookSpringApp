@@ -1,50 +1,40 @@
 package com.org.AddressbookSpringApp.model;
 
-import com.org.AddressbookSpringApp.dto.AddressbookDTO;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter@Setter
+@Getter
+@Setter
 @Entity
 @Data
 public class AddressbookData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private int id;
-    private String firstName;
-    private String lastName;
+
+    @Column(name = "FULL_NAME")
+    private String fullName;
+
+    @Column(name = "CITY")
     private String city;
+
+    @Column(name = "STATE")
     private String state;
+
+    @Column(name = "EMAIL_ID")
     private String emailId;
-    private int zip;
-    private long phoneNumber;
-    public AddressbookData(AddressbookDTO addressbookDTO) {
-        this.id = id;
-        this.firstName = addressbookDTO.firstName;
-        this.lastName = addressbookDTO.lastName;
-        this.city = addressbookDTO.city;
-        this.state = addressbookDTO.state;
-        this.emailId = addressbookDTO.emailId;
-        this.zip = addressbookDTO.zip;
-        this.phoneNumber = addressbookDTO.phoneNumber;
-    }
 
+    @Column(name = "ZIP")
+    private String zip;
 
-    public void updateaddressbookData(AddressbookDTO addressbookDTO) {
-        this.id = id;
-        this.firstName = addressbookDTO.firstName;
-        this.lastName = addressbookDTO.lastName;
-        this.city = addressbookDTO.city;
-        this.state = addressbookDTO.state;
-        this.emailId = addressbookDTO.emailId;
-        this.zip = addressbookDTO.zip;
-        this.phoneNumber = addressbookDTO.phoneNumber;
-    }
+    @Column(unique = true, name = "PHONE_NUMBER")
+    private String phoneNumber;
+
+    @Column(name = "ADDRESS")
+    private String address;
 }

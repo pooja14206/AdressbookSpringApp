@@ -1,8 +1,11 @@
 package com.org.AddressbookSpringApp.dto;
 
 import lombok.*;
+
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @ToString
 @Data
@@ -11,14 +14,10 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressbookDTO {
-
+    int id;
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "person FirstName is Invalid")
-    @NotNull(message = "First name should not be Empty")
-    public String firstName;
-
-    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "person LastName is Invalid")
-    @NotNull(message = "Last Name should not be Empty")
-    public String lastName;
+    @NotEmpty(message = "Full name should not be Empty")
+    public String fullName;
 
     @NotNull(message = "City should not be Empty")
     public String city;
@@ -30,11 +29,14 @@ public class AddressbookDTO {
     @NotNull(message = "Email should not be Empty")
     public String emailId;
 
-//    @Size(min = 6, max = 6, message = "Zip must be 10 digit")
-//    @NotNull(message = "Zip should not be Empty")
-    public int zip;
+    @NotNull(message = "Zip should not be Empty")
+    @Pattern(regexp = "^[0-9]{6}$", message = "Person Zip Invalid")
+    public String zip;
 
-//    @Size(min = 10, max = 10, message = "Enter 10 digit valid Phone number")
-//    @NotNull(message = "Phone Number should not be Empty")
-    public long phoneNumber;
+    @NotEmpty(message = "Phone Number should not be Empty")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Person PhoneNo Invalid")
+    public String phoneNumber;
+
+    @NotNull(message = "Address should not be Empty")
+    public String address;
 }
